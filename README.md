@@ -250,12 +250,20 @@ tqdm>=4.62.0           # Progress bars
 
 ## 🛠️ Installation Guide
 
-### Step 1: Clone the Repository
+### Step 1: Install Git LFS (for model files)
+
+```bash
+git lfs install
+```
+
+### Step 2: Clone the Repository
 
 ```bash
 git clone https://github.com/ad0883/brianmain.git
 cd brianmain
 ```
+
+> **Note**: The trained model (~172 MB) is stored using Git LFS and will download automatically during clone.
 
 ### Step 2: Create Virtual Environment
 
