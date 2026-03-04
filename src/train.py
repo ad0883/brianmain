@@ -8,6 +8,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime
 
+# Configure GPU before importing TensorFlow
+import tensorflow as tf
+
+# Enable GPU memory growth to prevent TensorFlow from allocating all GPU memory
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        print(f"✓ GPU(s) detected: {len(gpus)}")
+        for i, gpu in enumerate(gpus):
+            print(f"  GPU {i}: {gpu.name}")
+    except RuntimeError as e:
+        print(f"GPU configuration error: {e}")
+else:
+    print("⚠ No GPU detected. Training will run on CPU.")
+    print("  To use GPU, install CUDA and cuDNN, then reinstall tensorflow-gpu")
+
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
