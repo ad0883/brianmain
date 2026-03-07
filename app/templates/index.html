@@ -109,9 +109,14 @@
                             <span id="fileName" class="text-truncate">scan_001.jpg</span>
                         </div>
 
-                        <button class="primary-btn pulse-btn" id="analyzeBtn">
-                            <i class="fas fa-bolt"></i> Initiate Analysis
-                        </button>
+                        <div class="button-group">
+                            <button class="primary-btn pulse-btn" id="analyzeBtn">
+                                <i class="fas fa-bolt"></i> Initiate Analysis
+                            </button>
+                            <button class="secondary-btn" id="resetBtn" title="Test Another Image">
+                                <i class="fas fa-redo-alt"></i> Reset
+                            </button>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -265,6 +270,7 @@
         const fileName = document.getElementById('fileName');
         const imageContainer = document.getElementById('imageContainer');
         const analyzeBtn = document.getElementById('analyzeBtn');
+        const resetBtn = document.getElementById('resetBtn');
 
         const emptyState = document.getElementById('emptyState');
         const loadingState = document.getElementById('loadingState');
@@ -393,6 +399,48 @@
                 analyzeBtn.disabled = false;
                 analyzeBtn.innerHTML = '<i class="fas fa-bolt"></i> Re-Analyze Focus';
                 imageContainer.classList.remove('scanning');
+            }
+        });
+
+        // Reset Action - Test Another Image
+        resetBtn.addEventListener('click', () => {
+            // Reset file selection
+            selectedFile = null;
+            fileInput.value = '';
+            
+            // Hide preview section, show upload area
+            previewSection.style.display = 'none';
+            dropZone.style.display = 'flex';
+            
+            // Reset image preview
+            imagePreview.src = '';
+            fileName.textContent = 'scan_001.jpg';
+            
+            // Reset results section
+            resultsContainer.style.display = 'none';
+            loadingState.style.display = 'none';
+            emptyState.style.display = 'flex';
+            
+            // Reset analyze button
+            analyzeBtn.innerHTML = '<i class="fas fa-bolt"></i> Initiate Analysis';
+            analyzeBtn.disabled = false;
+            
+            // Reset view toggle if exists
+            const viewToggle = document.getElementById('viewToggle');
+            if (viewToggle) viewToggle.style.display = 'none';
+            
+            // Reset image adjustments
+            const brightnessSlider = document.getElementById('brightnessSlider');
+            const contrastSlider = document.getElementById('contrastSlider');
+            if (brightnessSlider) brightnessSlider.value = 100;
+            if (contrastSlider) contrastSlider.value = 100;
+            imagePreview.style.filter = '';
+            
+            // Clear heatmap canvas if exists
+            const heatmapCanvas = document.getElementById('heatmapCanvas');
+            if (heatmapCanvas) {
+                const ctx = heatmapCanvas.getContext('2d');
+                ctx.clearRect(0, 0, heatmapCanvas.width, heatmapCanvas.height);
             }
         });
 
