@@ -28,6 +28,15 @@ jobs:
         with:
           lfs: true  # Fetch Git LFS files (model files)
 
+      - name: Pull LFS files
+        run: git lfs pull
+
+      - name: Verify model files
+        run: |
+          echo "Checking model files..."
+          ls -lh models/
+          file models/brain_tumor_model_pytorch_best.pth
+
       - name: Set up Python version
         uses: actions/setup-python@v5
         with:
@@ -49,12 +58,12 @@ jobs:
         with:
           name: python-app
           path: |
-            .
-            !venv/
-            !.git/
-            !notebooks/
-            !data/
-            !*.ipynb
+            app/
+            src/
+            models/
+            utils/
+            requirements.txt
+            startup.txt
 
   deploy:
     permissions:
