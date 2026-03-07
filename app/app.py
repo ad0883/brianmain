@@ -118,7 +118,7 @@ def load_model():
         from src.model_pytorch import BrainTumorResNet
         
         model = BrainTumorResNet(num_classes=4, pretrained=False).to(device)
-        checkpoint = torch.load(model_path, map_location=device, weights_only=False)
+        checkpoint = torch.load(model_path, map_location=device)
         model.load_state_dict(checkpoint['model_state_dict'])
         model.eval()
         print(f"✓ Model loaded successfully from {model_path}")

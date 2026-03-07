@@ -1,8 +1,8 @@
-# Azure App Service deployment requirements
+# Railway deployment requirements (CPU-only for faster builds)
 numpy>=1.21.0
 Pillow>=8.0.0
 
-# PyTorch CPU-only
+# PyTorch CPU-only (smaller, faster install)
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch
 torchvision
