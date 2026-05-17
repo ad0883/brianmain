@@ -1736,6 +1736,6 @@ Code Quality:
 
 ---
 
-## 🔐 Security Notice
+## 🔐 Security Notice(FINAL VERSION)
 
-This repository contains proprietary code and trained models. Do not share credentials, API keys, or internal URLs in commits. For security concerns, contact the security team immediately.
+This repository contains proprietary code and trained models. Do not share credentials, API keys, or internal URLs in commits. For security concerns, contact the security team immediately...
