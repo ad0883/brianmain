@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="brain_tumor_detection",
     version="1.0.0",
-    author="DRDO Team",
+    author="",
     author_email="project@drdo.gov.in",
     description="Brain Tumor Detection System using Deep Learning",
     long_description=long_description,

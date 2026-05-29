@@ -12,6 +12,9 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        window.APPWRITE_API_BASE_URL = {{ appwrite_api_base_url|default('', true)|tojson }};
+    </script>
 </head>
 
 <body>
@@ -377,10 +380,12 @@
 
             const formData = new FormData();
             formData.append('file', selectedFile);
+            const apiBaseUrl = (window.APPWRITE_API_BASE_URL || '').trim().replace(/\/$/, '');
+            const predictUrl = apiBaseUrl ? `${apiBaseUrl}/predict` : '/predict';
 
             try {
                 // Minimum loading time for aesthetic purposes (1.5s)
-                const fetchPromise = fetch('/predict', { method: 'POST', body: formData });
+                const fetchPromise = fetch(predictUrl, { method: 'POST', body: formData });
                 const timerPromise = new Promise(resolve => setTimeout(resolve, 1500));
 
                 const [response] = await Promise.all([fetchPromise, timerPromise]);

@@ -23,11 +23,12 @@ from torchvision import transforms
 CLASS_NAMES = ['glioma', 'meningioma', 'notumor', 'pituitary']
 IMG_SIZE = 224
 MODEL_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'models')
+APPWRITE_API_BASE_URL = os.environ.get('APPWRITE_API_BASE_URL', '').rstrip('/')
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)
-app.secret_key = 'brain_tumor_detection_secret_key_drdo_2024'
+app.secret_key = os.environ.get('SECRET_KEY', 'brain_tumor_detection_secret_key_drdo_2024')
 
 # Configuration
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
@@ -170,7 +171,7 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     """Home page"""
-    return render_template('index.html')
+    return render_template('index.html', appwrite_api_base_url=APPWRITE_API_BASE_URL)
 
 
 @app.route('/predict', methods=['POST'])

@@ -66,6 +66,36 @@ docker build -t brain-tumor-detection .
 docker run -p 8000:8000 brain-tumor-detection
 ```
 
+## Appwrite Deployment
+
+This project deploys best as two pieces on Appwrite:
+
+1. Host the browser UI as an Appwrite Site, or keep it local for development.
+2. Deploy the inference backend as an Appwrite Function from `appwrite_function/`.
+
+The frontend supports a configurable API base URL. Set `APPWRITE_API_BASE_URL` to your Appwrite Function URL so the UI sends uploads to the function instead of `/predict` on the same origin.
+
+### Backend setup
+
+Use the Python ML runtime if available, and configure the function with these environment variables:
+
+- `MODEL_URL`: a downloadable URL for `brain_tumor_model_pytorch_best.pth`
+- `MODEL_PATH`: optional local checkpoint path if you bundle the file yourself
+- `MODEL_CACHE_PATH`: optional cache path inside the function container
+
+If you want to keep the function package small, upload the checkpoint to Appwrite Storage and point `MODEL_URL` at the downloadable file URL.
+
+### Local validation
+
+You can keep using the existing Flask app locally:
+
+```bash
+export APPWRITE_API_BASE_URL="https://<your-function-domain>"
+gunicorn --bind=0.0.0.0:8000 --workers=1 app.app:app
+```
+
+The browser UI will call the Appwrite Function whenever `APPWRITE_API_BASE_URL` is set.
+
 ---
 
 ## 📊 Project Overview
