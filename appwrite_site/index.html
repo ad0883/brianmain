@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor Detection - DRDO</title>
+    <link rel="stylesheet" href="static/css/style.css?v=3">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!--
+      Set `window.APPWRITE_API_BASE_URL` to your Appwrite Function base URL (e.g. https://[HOST]/[PATH])
+      Example: window.APPWRITE_API_BASE_URL = 'https://cloud.appwrite.io/v1/functions/<fnid>/executions'
+    -->
+    <script>window.APPWRITE_API_BASE_URL = '';</script>
+</head>
+
+<body>
+    <div class="background-effects" id="vanta-bg">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header glass-panel" data-tilt data-tilt-max="3" data-tilt-speed="400" data-tilt-glare
+            data-tilt-max-glare="0.2">
+            <div class="logo">
+                <div class="logo-icon-container">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div>
+                    <h1>NeuralNet Diagnostics</h1>
+                    <p class="subtitle">DRDO Advanced Brain Tumor Detection System</p>
+                </div>
+            </div>
+            <div class="header-status">
+                <span class="status-indicator"></span>
+                System Online
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Column: Upload & Preview -->
+            <div class="left-column">
+                <section class="upload-section glass-panel" data-tilt data-tilt-max="2" data-tilt-speed="400"
+                    data-tilt-glare data-tilt-max-glare="0.1">
+                    <div class="section-header">
+                        <h2><i class="fas fa-microscope"></i> Scan Input</h2>
+                    </div>
+
+                    <div class="upload-area" id="dropZone">
+                        <div class="upload-content">
+                            <div class="upload-icon-wrapper">
+                                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            </div>
+                            <p class="primary-text">Drag & drop MRI scan</p>
+                            <span class="secondary-text">or <label class="upload-link"><input type="file" id="fileInput"
+                                        accept="image/*" hidden>browse files</label></span>
+                            <div class="file-types">
+                                <span class="badge">JPG</span>
+                                <span class="badge">PNG</span>
+                                <span class="badge">DICOM-Ready</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div class="preview-section" id="previewSection" style="display: none;">
+                        <div class="image-container" id="imageContainer">
+                            <img id="imagePreview" src="" alt="MRI Preview">
+                            <canvas id="heatmapCanvas"></canvas>
+                            <div class="scanner-overlay" id="scannerOverlay">
+                                <div class="scanner-line"></div>
+                                <div class="scanner-burst"></div>
+                            </div>
+                        </div>
+
+                        <!-- View Toggle: Raw / AI Analysis -->
+                        <div class="view-toggle" id="viewToggle" style="display:none;">
+                            <button class="toggle-btn active" id="btnRawView"><i class="fas fa-image"></i> Raw
+                                Scan</button>
+                            <button class="toggle-btn" id="btnAiView"><i class="fas fa-fire"></i> AI Analysis</button>
+                        </div>
+
+                        <!-- Medical Image Viewer Toolbar -->
+                        <div class="image-toolbar">
+                            <button class="tool-btn" id="zoomInBtn" title="Zoom In"><i
+                                    class="fas fa-search-plus"></i></button>
+                            <button class="tool-btn" id="zoomOutBtn" title="Zoom Out"><i
+                                    class="fas fa-search-minus"></i></button>
+                            <button class="tool-btn" id="resetViewBtn" title="Reset View"><i
+                                    class="fas fa-undo"></i></button>
+                            <div class="toolbar-slider-group">
+                                <label><i class="fas fa-sun"></i></label>
+                                <input type="range" id="brightnessSlider" min="50" max="200" value="100"
+                                    class="toolbar-slider">
+                            </div>
+                            <div class="toolbar-slider-group">
+                                <label><i class="fas fa-adjust"></i></label>
+                                <input type="range" id="contrastSlider" min="50" max="200" value="100"
+                                    class="toolbar-slider">
+                            </div>
+                        </div>
+
+                        <div class="file-details">
+                            <i class="fas fa-file-image"></i>
+                            <span id="fileName" class="text-truncate">scan_001.jpg</span>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="primary-btn pulse-btn" id="analyzeBtn">
+                                <i class="fas fa-bolt"></i> Initiate Analysis
+                            </button>
+                            <button class="secondary-btn" id="resetBtn" title="Test Another Image">
+                                <i class="fas fa-redo-alt"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Results -->
+            <div class="right-column">
+                <section class="results-section glass-panel" id="resultsSection" data-tilt data-tilt-max="2"
+                    data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.1">
+                    <div class="section-header">
+                        <h2><i class="fas fa-chart-network"></i> Diagnostic Output</h2>
+                    </div>
+
+                    <!-- Initial State -->
+                    <div class="empty-state" id="emptyState">
+                        <div class="empty-icon">
+                            <i class="fas fa-satellite-dish"></i>
+                        </div>
+                        <p>Awaiting scan input for analysis.</p>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div class="loading-state" id="loadingState" style="display: none;">
+                        <div class="loader-container">
+                            <div class="loader">
+                                <svg viewBox="0 0 80 80">
+                                    <circle id="test" cx="40" cy="40" r="32"></circle>
+                                </svg>
+                            </div>
+                            <div class="loader triangle">
+                                <svg viewBox="0 0 86 80">
+                                    <polygon points="43 8 79 72 7 72"></polygon>
+                                </svg>
+                            </div>
+                            <div class="loader">
+                                <svg viewBox="0 0 80 80">
+                                    <rect x="8" y="8" width="64" height="64"></rect>
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="loading-text">Processing Neural Pathways<span class="dots">...</span></p>
+                    </div>
+
+                    <!-- Results Container -->
+                    <div class="results-container" id="resultsContainer" style="display: none;">
+
+                        <!-- Primary Diagnosis -->
+                        <div class="primary-result-card" id="primaryResultCard">
+                            <div class="diagnosis-header">
+                                <h3 class="diagnosis-title">Primary Diagnosis</h3>
+                                <div class="confidence-badge" id="confidenceBadge">
+                                    <i class="fas fa-check-circle"></i> High Confidence
+                                </div>
+                            </div>
+
+                            <div class="diagnosis-main">
+                                <div class="status-ring" id="statusRing">
+                                    <i class="fas fa-brain" id="statusIconInner"></i>
+                                </div>
+                                <div class="diagnosis-details">
+                                    <h4 id="predictionClass" class="gradient-text">Glioma Tumor</h4>
+                                    <div class="confidence-score">
+                                        <span class="score-label">Certainty:</span>
+                                        <span class="score-value" id="confidenceValue">98.5</span><span
+                                            class="score-symbol">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3D Brain Model -->
+                        <div class="data-card brain-model-card">
+                            <div class="card-title">
+                                <i class="fas fa-brain"></i> Neural Region Analysis
+                            </div>
+                            <div id="brainModelContainer"></div>
+                        </div>
+
+                        <!-- Probability Breakdown -->
+                        <div class="data-card probability-card">
+                            <div class="card-title">
+                                <i class="fas fa-chart-bar"></i> Probability Distribution
+                            </div>
+                            <div class="chart-and-bars">
+                                <canvas id="polarChart" width="220" height="220"></canvas>
+                                <div class="probability-bars" id="probabilityBars">
+                                    <!-- Bars populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Clinical Information -->
+                        <div class="data-card info-card">
+                            <div class="card-title">
+                                <i class="fas fa-book-medical"></i> Clinical Details
+                            </div>
+                            <div class="tumor-info" id="tumorInfo">
+                                <!-- Info populated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Recommendations -->
+                        <div class="data-card recommendation-card">
+                            <div class="card-title">
+                                <i class="fas fa-clipboard-check"></i> Next Steps
+                            </div>
+                            <div class="recommendation-content">
+                                <p id="recommendation"></p>
+                            </div>
+                        </div>
+
+                        <!-- Export PDF Button -->
+                        <button class="primary-btn export-btn" id="exportPdfBtn" style="display:none;">
+                            <i class="fas fa-file-pdf"></i> Export Diagnostic Report
+                        </button>
+
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer glass-panel" data-tilt data-tilt-max="1" data-tilt-speed="400">
+            <div class="footer-content">
+                <div class="warning-text">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Research Purposed Only:</strong> This AI system is an assistive tool and must not replace
+                    professional medical diagnosis.
+                </div>
+                <div class="copyright">
+                    &copy; 2026
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Third-party libs via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.21/dist/vanta.net.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- App logic (extracted to static/js/main.js) -->
+    <script src="static/js/main.js"></script>
+</body>
+
+</html>
