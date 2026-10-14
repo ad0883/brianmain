@@ -1,0 +1,7 @@
+# Offline export/validation tooling only; the Static Space uses browser inference.
+torch==2.8.0
+torchvision==0.23.0
+Pillow==11.3.0
+numpy==2.2.6
+onnx==1.23.2
+onnxruntime==1.31.0
