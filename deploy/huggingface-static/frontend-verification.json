@@ -1,0 +1,48 @@
+{
+  "runtime_package": "onnxruntime-web",
+  "runtime_version": "1.24.3",
+  "execution_provider": "wasm",
+  "num_threads": 1,
+  "environment": "Node.js; browser rendering and native browser JPEG decoding not exercised",
+  "model_sha256": "a046b76606463b1e69aae251153d246453a460b8f43f1b1ddae480d57288f2bc",
+  "sample": "app/uploads/20260304_201141_Te-gl_1.jpg",
+  "decode": "Pillow RGB to RGBA pixels, then actual deployed JavaScript preprocessing",
+  "probabilities": {
+    "glioma": 0.8063212340561862,
+    "meningioma": 0.03618735092836356,
+    "notumor": 0.04956961094834553,
+    "pituitary": 0.10792180406710485
+  },
+  "glioma_percentage_rounded": 80.63,
+  "max_absolute_probability_error_vs_onnx_cpu": 3.3075125699388863e-06,
+  "resize_check": {
+    "method": "Actual deployed JavaScript preprocessing versus Pillow antialiased bilinear on four random RGB arrays",
+    "sizes": [
+      [
+        224,
+        224
+      ],
+      [
+        150,
+        312
+      ],
+      [
+        512,
+        397
+      ],
+      [
+        31,
+        51
+      ]
+    ],
+    "max_absolute_normalized_pixel_error": 4.76837158203125e-07
+  },
+  "static_audit": {
+    "local_assets_present": true,
+    "javascript_syntax_valid": true,
+    "unresolved_jinja": false,
+    "backend_prediction_request": false
+  },
+  "dependency_url_check": "package.json, ort.min.js, ort-wasm-simd-threaded.mjs and ort-wasm-simd-threaded.wasm return HTTP 200 on pinned jsDelivr release",
+  "scope": "Numerical compatibility checks only; not clinical validation or an accuracy estimate"
+}

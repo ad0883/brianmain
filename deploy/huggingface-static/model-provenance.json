@@ -1,0 +1,208 @@
+{
+  "source_repository": "https://github.com/ad0883/brianmain",
+  "source_revision": "54baeb9acc4b4fa61906d7c8281077518bc2cd3e",
+  "checkpoint_sha256": "35de51a812a9be0b6f871e54757851e7d4e231651521fd3473b82a1f6568a546",
+  "architecture_sha256": "130e49ccc436a7176692e00c79cc12e83639322e01fec381c6fc0ef7928e84f1",
+  "model_file": "model.onnx",
+  "model_bytes": 98694867,
+  "model_sha256": "a046b76606463b1e69aae251153d246453a460b8f43f1b1ddae480d57288f2bc",
+  "format": "ONNX",
+  "precision": "float32",
+  "opset": 17,
+  "input": {
+    "name": "input",
+    "shape": [
+      1,
+      3,
+      224,
+      224
+    ],
+    "type": "float32",
+    "layout": "NCHW"
+  },
+  "output": {
+    "name": "logits",
+    "shape": [
+      1,
+      4
+    ],
+    "type": "float32"
+  },
+  "class_names": [
+    "glioma",
+    "meningioma",
+    "notumor",
+    "pituitary"
+  ],
+  "preprocessing": {
+    "color": "RGB",
+    "resize": [
+      224,
+      224
+    ],
+    "interpolation": "PIL bilinear",
+    "scale": "pixel/255",
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "exporter": "torch.onnx.export(dynamo=False, external_data=False)",
+  "versions": {
+    "torch": "2.8.0+cpu",
+    "torchvision": "0.23.0+cpu",
+    "onnx": "1.23.2",
+    "onnxruntime": "1.31.0",
+    "Pillow": "11.3.0",
+    "numpy": "2.2.6"
+  },
+  "validation": {
+    "runtime": "ONNX Runtime CPU",
+    "logit_tolerance": {
+      "rtol": 0.0001,
+      "atol": 0.0001
+    },
+    "probability_tolerance": {
+      "rtol": 0.0001,
+      "atol": 1e-06
+    },
+    "max_absolute_logit_error": 1.2636184692382812e-05,
+    "max_absolute_probability_error": 1.7881393432617188e-06,
+    "samples": [
+      {
+        "sample_class": "glioma",
+        "filename": "20260304_201141_Te-gl_1.jpg",
+        "image_sha256": "a629aadd24c31daa08d9e79dce6c1dfcfa77ac95775b4683ec29663c61cbf9dd",
+        "pytorch_logits": [
+          2.4300343990325928,
+          -0.6737475991249084,
+          -0.35906982421875,
+          0.41894420981407166
+        ],
+        "onnx_logits": [
+          2.4300405979156494,
+          -0.6737602353096008,
+          -0.35906824469566345,
+          0.4189385771751404
+        ],
+        "pytorch_probabilities": [
+          0.8063227534294128,
+          0.036187078803777695,
+          0.04956970736384392,
+          0.10792040079832077
+        ],
+        "onnx_probabilities": [
+          0.8063245415687561,
+          0.03618647903203964,
+          0.049569591879844666,
+          0.1079193726181984
+        ],
+        "prediction": "glioma",
+        "max_absolute_logit_error": 1.2636184692382812e-05,
+        "max_absolute_probability_error": 1.7881393432617188e-06
+      },
+      {
+        "sample_class": "meningioma",
+        "filename": "20260304_201629_Te-aug-me_80.jpg",
+        "image_sha256": "5bfe4701abefa5f2df5e4192c709b7ac80ccfe630c847bb23b41f13ba689faa0",
+        "pytorch_logits": [
+          -0.1694546937942505,
+          2.470147132873535,
+          -0.8350856900215149,
+          -1.1181386709213257
+        ],
+        "onnx_logits": [
+          -0.16945406794548035,
+          2.470146894454956,
+          -0.8350865244865417,
+          -1.1181377172470093
+        ],
+        "pytorch_probabilities": [
+          0.0628582015633583,
+          0.8804939985275269,
+          0.032305918633937836,
+          0.024341855198144913
+        ],
+        "onnx_probabilities": [
+          0.06285824626684189,
+          0.8804939985275269,
+          0.032305892556905746,
+          0.02434188686311245
+        ],
+        "prediction": "meningioma",
+        "max_absolute_logit_error": 9.5367431640625e-07,
+        "max_absolute_probability_error": 4.470348358154297e-08
+      },
+      {
+        "sample_class": "notumor",
+        "filename": "20260304_201717_Te-no_159.jpg",
+        "image_sha256": "8a5052ac55d7ffc4175768aeda33c7178bcbf0015e9e44c901d40ac9660f6fd6",
+        "pytorch_logits": [
+          -0.2852891981601715,
+          -0.9537263512611389,
+          2.522643804550171,
+          -0.9335311651229858
+        ],
+        "onnx_logits": [
+          -0.28528890013694763,
+          -0.9537265300750732,
+          2.5226447582244873,
+          -0.933531641960144
+        ],
+        "pytorch_probabilities": [
+          0.053731389343738556,
+          0.027537820860743523,
+          0.8906312584877014,
+          0.028099605813622475
+        ],
+        "onnx_probabilities": [
+          0.05373136326670647,
+          0.027537785470485687,
+          0.8906312584877014,
+          0.02809956856071949
+        ],
+        "prediction": "notumor",
+        "max_absolute_logit_error": 9.5367431640625e-07,
+        "max_absolute_probability_error": 3.725290298461914e-08
+      },
+      {
+        "sample_class": "pituitary",
+        "filename": "20260304_201649_Te-pi_43.jpg",
+        "image_sha256": "8dd4f765ba9425dc7c5c028a8f3793c6668249a2623aab95d119ee1f024ca3b9",
+        "pytorch_logits": [
+          -0.25704142451286316,
+          -0.6703288555145264,
+          -0.7832140922546387,
+          2.586592435836792
+        ],
+        "onnx_logits": [
+          -0.2570412755012512,
+          -0.6703280210494995,
+          -0.7832151055335999,
+          2.5865917205810547
+        ],
+        "pytorch_probabilities": [
+          0.0514657236635685,
+          0.03404314070940018,
+          0.03040914237499237,
+          0.884082019329071
+        ],
+        "onnx_probabilities": [
+          0.05146576464176178,
+          0.03404318913817406,
+          0.030409133061766624,
+          0.8840819597244263
+        ],
+        "prediction": "pituitary",
+        "max_absolute_logit_error": 1.0132789611816406e-06,
+        "max_absolute_probability_error": 5.960464477539063e-08
+      }
+    ]
+  }
+}

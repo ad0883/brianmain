@@ -1,3 +1,4 @@
 # Minimal gitignore - pushing everything
 .DS_Store
 venv
+/deploy/huggingface-static/model.onnx
